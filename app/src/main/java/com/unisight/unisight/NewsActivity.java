@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
     private boolean firstLoadNews;
     private ArrayList<DynamicListViewItem> data;
     private DynamicListViewAdapter adapter;
-    private ListView contentsList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
         data = new ArrayList<>();
         adapter = new DynamicListViewAdapter(this, data);
 
-        contentsList = findViewById(R.id.listview_contents);
+        ListView contentsList = findViewById(R.id.listview_contents);
         contentsList.setAdapter(adapter);
         contentsList.setOnItemClickListener(this);
     }

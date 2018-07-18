@@ -60,10 +60,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
+                Intent weatherIntent = new Intent(this, WeatherActivity.class);
+                startActivity(weatherIntent);
                 break;
             case 1:
-                Intent intent = new Intent(this, NewsActivity.class);
-                startActivity(intent);
+                Intent newsIntent = new Intent(this, NewsActivity.class);
+                startActivity(newsIntent);
                 break;
             case 2:
                 break;

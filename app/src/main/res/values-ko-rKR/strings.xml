@@ -5,4 +5,5 @@
     <string name="support">요청하기</string>
     <string name="weather">(날씨 정보)</string>
     <string name="highlight_news">하이라이트 뉴스</string>
+    <string name="weather_detail">상세 날씨</string>
 </resources>
