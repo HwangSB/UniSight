@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">UniSight</string>
     <string name="support">Support</string>
+    <string name="refresh">Refresh</string>
     <string name="weather">(Weather Info)</string>
+    <string name="highlight_news">Highlight News</string>
 </resources>

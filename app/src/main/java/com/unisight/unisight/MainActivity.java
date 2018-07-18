@@ -1,10 +1,13 @@
 package com.unisight.unisight;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +16,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private TextView weatherInfoText;
-    private Button supportButton;
     private ListView categoryList;
 
     @Override
@@ -22,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         weatherInfoText = findViewById(R.id.textview_weather_info);
-        supportButton = findViewById(R.id.button_support);
         categoryList = findViewById(R.id.listview_category);
 
         weatherInfoText.setContentDescription("잠실동 오후 2:34, 비가 조금 내리고, 미세먼지 농도가 다소 높으니 외출시 마스크를 꼭 착용하세요");
@@ -39,15 +40,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        NewsParser newsTask = new NewsParser();
-        newsTask.execute();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_support:
+                Toast.makeText(this, "카카오톡 플러스친구로 상담을 요청합니다 (준비중)", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+        switch (position) {
+            case 0:
+                break;
+            case 1:
+                Intent intent = new Intent(this, NewsActivity.class);
+                startActivity(intent);
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
     }
 }
