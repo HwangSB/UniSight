@@ -15,28 +15,33 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private TextView weatherInfoText;
-    private ListView categoryList;
+    public static final String EXTRA_NAME_RECOMMEND_APP_CATEGORY = "RECOMMEND_APP_CATEGORY";
+    public static final int EXTRA_VALUE_RECOMMEND_APP_ERROR = -1;
+    public static final int EXTRA_VALUE_RECOMMEND_APP_USEFUL = 0;
+    public static final int EXTRA_VALUE_RECOMMEND_APP_ENTERTAINMENT = 1;
+    public static final int EXTRA_VALUE_RECOMMEND_APP_WEATHER = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        weatherInfoText = findViewById(R.id.textview_weather_info);
-        categoryList = findViewById(R.id.listview_category);
+        TextView weatherInfoText = findViewById(R.id.textview_weather_info);
+        ListView categoryListView = findViewById(R.id.listview_category);
 
         weatherInfoText.setContentDescription("잠실동 오후 2:34, 비가 조금 내리고, 미세먼지 농도가 다소 높으니 외출시 마스크를 꼭 착용하세요");
 
         ArrayList<DynamicListViewItem> data = new ArrayList<>();
         data.add(new DynamicListViewItem("상세 날씨", "기온, 강수량, 미세먼지 농도 등 상세한 날씨 정보를 확인합니다"));
         data.add(new DynamicListViewItem("하이라이트 뉴스", "이 시각 주요뉴스를 조회합니다"));
-        data.add(new DynamicListViewItem("유용한 앱", "전체 0개"));
+        data.add(new DynamicListViewItem("유용한 앱", "전체 4개"));
+        data.add(new DynamicListViewItem("엔터테인먼트 앱", "전체 4개"));
+        data.add(new DynamicListViewItem("날씨 앱", "전체 3개"));
 
         DynamicListViewAdapter adapter = new DynamicListViewAdapter(this, data);
 
-        categoryList.setAdapter(adapter);
-        categoryList.setOnItemClickListener(this);
+        categoryListView.setAdapter(adapter);
+        categoryListView.setOnItemClickListener(this);
     }
 
     @Override
@@ -58,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent appsIntent = new Intent(this, AppsActivity.class);
+
         switch (position) {
             case 0:
                 Intent weatherIntent = new Intent(this, WeatherActivity.class);
@@ -68,6 +75,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(newsIntent);
                 break;
             case 2:
+                appsIntent.putExtra(EXTRA_NAME_RECOMMEND_APP_CATEGORY, EXTRA_VALUE_RECOMMEND_APP_USEFUL);
+                startActivity(appsIntent);
+                break;
+            case 3:
+                appsIntent.putExtra(EXTRA_NAME_RECOMMEND_APP_CATEGORY, EXTRA_VALUE_RECOMMEND_APP_ENTERTAINMENT);
+                startActivity(appsIntent);
+                break;
+            case 4:
+                appsIntent.putExtra(EXTRA_NAME_RECOMMEND_APP_CATEGORY, EXTRA_VALUE_RECOMMEND_APP_WEATHER);
+                startActivity(appsIntent);
                 break;
             default:
                 break;

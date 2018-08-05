@@ -8,22 +8,21 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-public class NewsParser extends AsyncTask<Void, Void, List<String>> {
+public class NewsParser extends AsyncTask<Void, Void, HashMap<String, String>> {
     @Override
-    protected List<String> doInBackground(Void... voids) {
-        List<String> result = new ArrayList<>();
+    protected HashMap<String, String> doInBackground(Void... voids) {
+        HashMap<String, String> result = new HashMap<>();
         try {
             Document doc = Jsoup.connect("http://news.naver.com").get();
             Elements today_main_news_img = doc.select(".newsnow_imgarea");
             Elements today_main_news_txt = doc.select(".newsnow_tx_inner");
             for (Element element : today_main_news_img) {
-                result.add(element.text());
+                result.put(element.text(), element.getElementsByAttribute("href").attr("href"));
             }
             for (Element element : today_main_news_txt) {
-                result.add(element.text());
+                result.put(element.text(), element.getElementsByAttribute("href").attr("href"));
             }
         } catch (IOException e) {
             e.printStackTrace();

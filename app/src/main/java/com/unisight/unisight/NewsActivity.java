@@ -1,7 +1,8 @@
 package com.unisight.unisight;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -12,16 +13,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class NewsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private boolean firstLoadNews;
     private ArrayList<DynamicListViewItem> data;
     private DynamicListViewAdapter adapter;
+    private HashMap<String, String> newsLinkMap;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
         ActionBar actionBar = getSupportActionBar();
@@ -34,9 +36,9 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
         data = new ArrayList<>();
         adapter = new DynamicListViewAdapter(this, data);
 
-        ListView contentsList = findViewById(R.id.listview_contents);
-        contentsList.setAdapter(adapter);
-        contentsList.setOnItemClickListener(this);
+        ListView contentsListView = findViewById(R.id.listview_news);
+        contentsListView.setAdapter(adapter);
+        contentsListView.setOnItemClickListener(this);
     }
 
     @Override
@@ -68,23 +70,30 @@ public class NewsActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        int count = 0;
+        for(String key : newsLinkMap.keySet()) {
+            if (count == position) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(newsLinkMap.get(key)));
+                startActivity(intent);
+                break;
+            }
+            count++;
+        }
     }
 
     private void refreshNews() {
         data.clear();
 
         NewsParser newsTask = new NewsParser();
-        List<String> newsTitleList = null;
 
         try {
-            newsTitleList = newsTask.execute().get();
+            newsLinkMap = newsTask.execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        if (newsTitleList != null) {
-            for (String newsTitle : newsTitleList) {
+        if (newsLinkMap != null) {
+            for (String newsTitle : newsLinkMap.keySet()) {
                 data.add(new DynamicListViewItem(newsTitle, ""));
             }
             adapter.notifyDataSetChanged();
